@@ -12,10 +12,15 @@ client_deepseek = OpenAI(
     base_url="https://inference.baseten.co/v1"
 )
 
-from pathlib import Path
-
-dossier_articles = Path(__file__).parent / "data"
-
-fichiers_pdf = list(dossier_articles.glob("*.pdf"))
 vector_store_id = st.secrets["OPENAI_VECTOR_STORE_ID"]
 
+try:
+    vector_store = client_openai.vector_stores.retrieve(
+        vector_store_id=vector_store_id
+    )
+
+    st.success("Vector Store connected successfully.")
+
+except Exception as e:
+    st.error("Unable to connect to the Vector Store.")
+    st.code(str(e))
