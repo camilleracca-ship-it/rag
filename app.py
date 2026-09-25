@@ -17,4 +17,5 @@ from pathlib import Path
 dossier_articles = Path(__file__).parent / "data"
 
 fichiers_pdf = list(dossier_articles.glob("*.pdf"))
+vector_store_id = st.secrets["OPENAI_VECTOR_STORE_ID"]
 
