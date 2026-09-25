@@ -14,13 +14,32 @@ client_deepseek = OpenAI(
 
 vector_store_id = st.secrets["OPENAI_VECTOR_STORE_ID"]
 
+st.subheader("System check")
+
+# OpenAI
+try:
+    client_openai.models.list()
+    st.success("OpenAI ✓")
+except Exception as e:
+    st.error("OpenAI ✗")
+    st.code(str(e))
+
+
+# Vector Store
 try:
     vector_store = client_openai.vector_stores.retrieve(
         vector_store_id=vector_store_id
     )
-
-    st.success("Vector Store connected successfully.")
-
+    st.success("Vector Store ✓")
 except Exception as e:
-    st.error("Unable to connect to the Vector Store.")
+    st.error("Vector Store ✗")
+    st.code(str(e))
+
+
+# DeepSeek / Baseten
+try:
+    client_deepseek.models.list()
+    st.success("DeepSeek ✓")
+except Exception as e:
+    st.error("DeepSeek ✗")
     st.code(str(e))
