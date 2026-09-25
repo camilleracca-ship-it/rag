@@ -14,4 +14,14 @@ vector_store = client.vector_stores.create(
     name="erythromelalgia_articles"
 )
 
-print("Vector Store créé :", vector_store.id)
+file_streams = [
+    open(fichier, "rb")
+    for fichier in fichiers_pdf
+]
+
+client.vector_stores.file_batches.upload_and_poll(
+    vector_store_id=vector_store.id,
+    files=file_streams
+)
+
+print("Vector Store prêt :", vector_store.id)
