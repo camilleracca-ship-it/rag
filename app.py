@@ -11,3 +11,7 @@ client_deepseek = OpenAI(
     api_key=st.secrets["BASETEN_API_KEY"],
     base_url="https://inference.baseten.co/v1"
 )
+
+from pathlib import Path
+
+dossier_articles = Path(__file__).parent / "articles"
