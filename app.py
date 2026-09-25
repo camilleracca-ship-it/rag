@@ -14,4 +14,7 @@ client_deepseek = OpenAI(
 
 from pathlib import Path
 
-dossier_articles = Path(__file__).parent / "articles"
+dossier_articles = Path(__file__).parent / "data"
+
+fichiers_pdf = list(dossier_articles.glob("*.pdf"))
+
