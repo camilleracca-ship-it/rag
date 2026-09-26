@@ -38,7 +38,7 @@ if question:
     context = "\n\n".join(context_parts)
 
     response = client_deepseek.chat.completions.create(
-        model="deepseek-ai/DeepSeek-R1",
+        model="deepseek-ai/DeepSeek-V4.1-Flash",
         messages=[
             {
                 "role": "system",
