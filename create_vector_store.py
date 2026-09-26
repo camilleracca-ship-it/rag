@@ -10,6 +10,8 @@ dossier_articles = Path(__file__).parent / "data"
 
 fichiers_pdf = list(dossier_articles.glob("*.pdf"))
 
+print("PDF trouvés :", len(fichiers_pdf))
+
 vector_store = client.vector_stores.create(
     name="erythromelalgia_articles"
 )
