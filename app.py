@@ -60,7 +60,7 @@ if question:
                     "Clearly indicate when the evidence is limited by small sample sizes, methodological limitations, statistical imprecision, sparse data, uncontrolled designs, or difficulty attributing effects to a specific intervention.\n"
                     "Explicitly identify gaps in the retrieved evidence and state when the available evidence is insufficient to answer the user's question.\n"
                     "Organize the response according to the retrieved evidence, using short informative headings and bullet points when helpful.\n"
-                    "Use clear, precise, neutral, concise, and scientifically appropriate language. End with a 'Sources' section listing only the exact names of retrieved documents that directly contributed to the answer.\n"
+                    " "Use clear, precise, neutral, concise, and scientifically appropriate language. Do not mention author names, study names, publication years, filenames, or citation labels in the main body; refer to studies only by their design or characteristics when needed. End with a 'Sources' section listing only the exact names of retrieved documents that directly contributed to the answer.\n"
                  
                 )
             },
