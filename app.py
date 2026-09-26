@@ -77,3 +77,12 @@ if question:
     answer = response.choices[0].message.content
 
     st.write(answer)
+
+if question:
+    results = client_openai.vector_stores.search(
+        vector_store_id=vector_store_id,
+        query=question
+    )
+
+    st.write("Number of retrieved results:", len(results.data))
+    st.write(results)
