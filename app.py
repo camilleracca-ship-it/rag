@@ -77,7 +77,12 @@ if question:
 
                     "If the retrieved literature is insufficient to answer the question, state this explicitly. "
 
-                    "Use clear, precise, neutral, and concise scientific language."
+                    "Use clear, precise, neutral, and concise scientific language. "
+                    "Structure the response with short, informative headings and bullet points where appropriate. "
+                    "Avoid long uninterrupted paragraphs. "
+                    "For broad questions, when appropriate, organize the response into sections such as 'Overall evidence', 'Evidence by treatment', 'Consistency of findings', 'Limitations of the evidence', and 'Sources'. "
+                    "For questions focused on a single treatment, when appropriate, use sections such as 'Overall evidence', 'Clinical findings', 'Factors associated with response', 'Limitations of the evidence', and 'Sources'. "
+                    "Adapt the headings to the specific question rather than using the same structure mechanically for every response."
                 )
             },
             {
