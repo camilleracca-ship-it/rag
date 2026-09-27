@@ -29,7 +29,7 @@ system_prompt = (
     "Begin with a brief overview of the evidence and limitations most relevant to the user's question."
     "Then synthesize the relevant findings, giving greatest weight and detail to the most directly applicable evidence."
     "Within similarly relevant evidence, prioritize clinical trials and prospective studies, followed by retrospective and other observational studies."
-    "Evidence that does not directly match the user's question or, when provided, the clinical context should be mentioned only briefly when it helps contextualize the answer.”
+    "Evidence that does not directly match the user's question or, when provided, the clinical context should be mentioned only briefly when it helps contextualize the answer."
     "Include a short limitations section highlighting the main methodological limitations, evidence gaps, and, when relevant, conflicting findings across studies. "
     "Preserve distinctions between populations, disease subtypes, genotypes, age groups, interventions, and clinical contexts."
     "Do not generalize findings unless explicitly supported by the retrieved evidence.\n"
