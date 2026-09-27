@@ -9,14 +9,13 @@ study_metadata = {
     },
 
     "algo2025.pdf": {
-      "author": "AlgoTherapeutix (NCT05917912)",
-      "year": 2025,
-      "title": "Efficacy of ATX01 Study in Erythromelalgia",
-      "publication_type": "Clinical trial registry results",
-      "study_design": "Randomized controlled trial",
-      "age_group": "Adults"
+        "author": "AlgoTherapeutix (NCT05917912)",
+        "year": 2025,
+        "title": "Efficacy of ATX01 Study in Erythromelalgia",
+        "publication_type": "Clinical trial registry results",
+        "study_design": "Randomized controlled trial",
+        "age_group": "Adults"
     },
-}
 
     "cacciola2005.pdf": {
         "author": "Cacciola et al.",
@@ -26,7 +25,6 @@ study_metadata = {
         "study_design": "Prospective single-arm interventional study",
         "age_group": "Adults"
     },
-}
 
     "cao2016.pdf": {
         "author": "Cao et al.",
@@ -35,8 +33,7 @@ study_metadata = {
         "publication_type": "Peer-reviewed journal article",
         "study_design": "Randomized controlled trial",
         "age_group": "Adults"
-   },
-}
+    },
 
     "cook-norris2012.pdf": {
         "author": "Cook-Norris et al.",
@@ -45,18 +42,16 @@ study_metadata = {
         "publication_type": "Peer-reviewed journal article",
         "study_design": "Case series",
         "age_group": "Children"
-   },
-}
+    },
 
     "davis2000.pdf": {
         "author": "Davis et al.",
         "year": 2000,
-        "title": "Natural History of Erythromelalgia : Presentation and outcome in 168 patients",
+        "title": "Natural History of Erythromelalgia: Presentation and outcome in 168 patients",
         "publication_type": "Peer-reviewed journal article",
         "study_design": "Case series",
         "age_group": "Adults and Children"
-   },
-}
+    },
 
     "ducrocq2025.pdf": {
         "author": "Ducrocq et al.",
@@ -65,18 +60,16 @@ study_metadata = {
         "publication_type": "Peer-reviewed journal article",
         "study_design": "Case series",
         "age_group": "Adults and Children"
-   },
-}
+    },
 
     "durosaro2008.pdf": {
         "author": "Durosaro et al.",
         "year": 2008,
-        "title": "Intervention for Erythromelalgia, a Chronic Pain Syndrome : Comprehensive Pain Rehabilitation Center",
+        "title": "Intervention for Erythromelalgia, a Chronic Pain Syndrome: Comprehensive Pain Rehabilitation Center",
         "publication_type": "Peer-reviewed journal article",
         "study_design": "Case series",
         "age_group": "Adults"
-   },
-}
+    },
 
     "fischer2009.pdf": {
         "author": "Fischer et al.",
@@ -85,8 +78,7 @@ study_metadata = {
         "publication_type": "Peer-reviewed journal article",
         "study_design": "Case series",
         "age_group": "Adults and Children"
-   },
-}
+    },
 
     "geha2016.pdf": {
         "author": "Geha et al.",
@@ -95,9 +87,7 @@ study_metadata = {
         "publication_type": "Peer-reviewed journal article",
         "study_design": "Randomized controlled trial",
         "age_group": "Adults and Children"
-        
-   },
-}
+    },
 
     "goldberg2012.pdf": {
         "author": "Goldberg et al.",
@@ -106,9 +96,7 @@ study_metadata = {
         "publication_type": "Peer-reviewed journal article",
         "study_design": "Randomized controlled trial",
         "age_group": "Adults"
-        
-   },
-}
+    },
 
     "kalgaard2003.pdf": {
         "author": "Kalgaard et al.",
@@ -117,9 +105,7 @@ study_metadata = {
         "publication_type": "Peer-reviewed journal article",
         "study_design": "Randomized controlled trial",
         "age_group": "Adults and Children"
-        
-   },
-}
+    },
 
     "michelerio2023.pdf": {
         "author": "Michelerio et al.",
@@ -128,9 +114,7 @@ study_metadata = {
         "publication_type": "Peer-reviewed journal article",
         "study_design": "Case series",
         "age_group": "Adults and Children"
-        
-   },
-}
+    },
 
     "huang2014.pdf": {
         "author": "Huang et al.",
@@ -139,9 +123,7 @@ study_metadata = {
         "publication_type": "Peer-reviewed journal article",
         "study_design": "Prospective observational study",
         "age_group": "Adults"
-        
-   },
-}
+    },
 
     "paganiestevez2017.pdf": {
         "author": "Pagani-Estevez et al.",
@@ -150,9 +132,7 @@ study_metadata = {
         "publication_type": "Peer-reviewed journal article",
         "study_design": "Case series",
         "age_group": "Adults"
-        
-   },
-}
+    },
 
     "michiels2003.pdf": {
         "author": "Michiels et al.",
@@ -161,9 +141,7 @@ study_metadata = {
         "publication_type": "Peer-reviewed journal article",
         "study_design": "Case series",
         "age_group": "Adults"
-        
-   },
-}
+    },
 
     "michiels2006.pdf": {
         "author": "Michiels et al.",
@@ -172,9 +150,7 @@ study_metadata = {
         "publication_type": "Peer-reviewed journal article",
         "study_design": "Case series",
         "age_group": "Adults"
-        
-   },
-}
+    },
 
     "mork2004.pdf": {
         "author": "Mork et al.",
@@ -183,9 +159,7 @@ study_metadata = {
         "publication_type": "Peer-reviewed journal article",
         "study_design": "Randomized controlled trial",
         "age_group": "Adults"
-        
-   },
-}
+    },
 
     "pfizer2019.pdf": {
         "author": "Pfizer (NCT01769274)",
@@ -194,9 +168,7 @@ study_metadata = {
         "publication_type": "Clinical trial registry results",
         "study_design": "Randomized controlled trial",
         "age_group": "Adults and Children"
-        
-   },
-}
+    },
 
     "poterucha2013.pdf": {
         "author": "Poterucha et al.",
@@ -205,9 +177,7 @@ study_metadata = {
         "publication_type": "Peer-reviewed journal article",
         "study_design": "Case series",
         "age_group": "Adults and Children"
-        
-   },
-}
+    },
 
     "rocca2024.pdf": {
         "author": "Rocca et al.",
@@ -216,9 +186,7 @@ study_metadata = {
         "publication_type": "Peer-reviewed journal article",
         "study_design": "Randomized controlled trial",
         "age_group": "Adults"
-        
-   },
-}
+    },
 
     "sun2023.pdf": {
         "author": "Sun et al.",
@@ -227,9 +195,7 @@ study_metadata = {
         "publication_type": "Peer-reviewed journal article",
         "study_design": "Case series",
         "age_group": "Children"
-        
-   },
-}
+    },
 
     "wang2018.pdf": {
         "author": "Wang et al.",
@@ -238,9 +204,7 @@ study_metadata = {
         "publication_type": "Peer-reviewed journal article",
         "study_design": "Prospective single-arm interventional study",
         "age_group": "Adults and Children"
-        
-   },
-}
+    },
 
     "wang2022.pdf": {
         "author": "Wang et al.",
@@ -249,20 +213,16 @@ study_metadata = {
         "publication_type": "Peer-reviewed journal article",
         "study_design": "Prospective single-arm interventional study",
         "age_group": "Adults and Children"
-        
-   },
-}
+    },
 
     "xenon2014.pdf": {
         "author": "Xenon Pharmaceuticals (NCT01486446)",
         "year": 2014,
-        "title": "Phase 2a, Exploratory Study to Evaluate the Safety, Efficacy, Tolerability and Pharmacokinetics of XPF-002 in Patients With Primary/ Inherited Erythromelalgia",
-        "publication_type": "Peer-reviewed journal article",
-        "study_design": "Clinical trial registry results",
+        "title": "Phase 2a, Exploratory Study to Evaluate the Safety, Efficacy, Tolerability and Pharmacokinetics of XPF-002 in Patients With Primary/Inherited Erythromelalgia",
+        "publication_type": "Clinical trial registry results",
+        "study_design": "Randomized controlled trial",
         "age_group": "Adults and Children"
-        
-   },
-}
+    },
 
     "racca2026.pdf": {
         "author": "Racca et al.",
@@ -271,5 +231,5 @@ study_metadata = {
         "publication_type": "Peer-reviewed journal article",
         "study_design": "Systematic review",
         "age_group": "Adults and Children"
-        
-   },
+    },
+}
