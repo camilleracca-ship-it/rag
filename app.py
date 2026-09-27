@@ -157,7 +157,7 @@ def retrieve_evidence(question):
     selected_keys = set()
     chunks_per_file = {}
 
-    max_chunks_per_file = 4
+    max_chunks_per_file = 3
     max_total_chunks = 30
 
     for chunk in ranked_chunks:
