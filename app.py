@@ -15,7 +15,6 @@ client_deepseek = OpenAI(
 vector_store_id = st.secrets["OPENAI_VECTOR_STORE_ID"]
 
 system_prompt = (
-    system_prompt = (
     "Answer the user's question exclusively from the retrieved scientific evidence and the provided study metadata.\n"
 
     "Base every substantive medical or quantitative claim on information explicitly present in the retrieved excerpts. "
