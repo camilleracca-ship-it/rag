@@ -147,13 +147,14 @@ def retrieve_evidence(question):
     ranked_chunks = sorted(
         unique_results.values(),
         key=lambda chunk: (
-            chunk["score"],
-            chunk["hits"]
+            chunk["hits"],
+            chunk["score"]
         ),
         reverse=True
     )
 
     selected_chunks = []
+    selected_keys = set()
     chunks_per_file = {}
 
     max_chunks_per_file = 4
@@ -165,16 +166,44 @@ def retrieve_evidence(question):
 
         filename = chunk["filename"]
 
+        if chunks_per_file.get(filename, 0) > 0:
+            continue
+
+        chunk_key = (
+            chunk["filename"],
+            " ".join(chunk["text"].split())
+        )
+
+        selected_chunks.append(chunk)
+        selected_keys.add(chunk_key)
+        chunks_per_file[filename] = 1
+
+    for chunk in ranked_chunks:
+        if len(selected_chunks) >= max_total_chunks:
+            break
+
+        filename = chunk["filename"]
+
+        chunk_key = (
+            chunk["filename"],
+            " ".join(chunk["text"].split())
+        )
+
+        if chunk_key in selected_keys:
+            continue
+
         if chunks_per_file.get(filename, 0) >= max_chunks_per_file:
             continue
 
         selected_chunks.append(chunk)
+        selected_keys.add(chunk_key)
 
         chunks_per_file[filename] = (
             chunks_per_file.get(filename, 0) + 1
         )
 
     return selected_chunks, retrieval_queries, ranked_chunks
+
 
 question = st.text_input(
     "Ask a question about pain management in erythromelalgia"
@@ -185,13 +214,18 @@ if question:
         chunks, retrieval_queries, ranked_chunks = retrieve_evidence(question)
 
     if not chunks:
-        st.warning("No relevant evidence was retrieved for this question.")
+        st.warning(
+            "No relevant evidence was retrieved for this question."
+        )
         st.stop()
 
     context_parts = []
 
     for chunk in chunks:
-        metadata = study_metadata.get(chunk["filename"], {})
+        metadata = study_metadata.get(
+            chunk["filename"],
+            {}
+        )
 
         metadata_text = "\n".join(
             f"{key}: {value}"
@@ -200,30 +234,49 @@ if question:
 
         context_parts.append(
             f"DOCUMENT: {chunk['filename']}\n"
-            f"STUDY METADATA:\n{metadata_text}\n\n"
-            f"RETRIEVED EXCERPT:\n{chunk['text']}"
+            f"STUDY METADATA:\n"
+            f"{metadata_text}\n\n"
+            f"RETRIEVED EXCERPT:\n"
+            f"{chunk['text']}"
         )
 
     context = "\n\n".join(context_parts)
 
     with st.expander("Retrieval diagnostics"):
+
         selected_ids = {
-            (chunk["filename"], chunk["text"])
+            (
+                chunk["filename"],
+                " ".join(chunk["text"].split())
+            )
             for chunk in chunks
         }
 
-        for rank, chunk in enumerate(ranked_chunks, start=1):
-            selected = (
+        for rank, chunk in enumerate(
+            ranked_chunks,
+            start=1
+        ):
+            chunk_id = (
                 chunk["filename"],
-                chunk["text"]
-            ) in selected_ids
+                " ".join(chunk["text"].split())
+            )
+
+            selected = chunk_id in selected_ids
+
+            metadata = study_metadata.get(
+                chunk["filename"],
+                {}
+            )
 
             st.write(
                 f"Rank {rank}",
                 "|", chunk["filename"],
                 "| hits:", chunk["hits"],
                 "| score:", round(chunk["score"], 3),
-                "| SENT:", "YES" if selected else "NO"
+                "| study design:",
+                metadata.get("study_design", "Unknown"),
+                "| SENT:",
+                "YES" if selected else "NO"
             )
 
     with st.spinner("Synthesizing the evidence..."):
@@ -238,7 +291,8 @@ if question:
                     "role": "user",
                     "content": (
                         f"Question:\n{question}\n\n"
-                        f"Retrieved scientific literature:\n{context}"
+                        f"Retrieved scientific literature:\n"
+                        f"{context}"
                     )
                 }
             ]
