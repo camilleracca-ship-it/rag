@@ -63,14 +63,16 @@ def build_retrieval_queries(question):
 
         (
             f"{q} "
-            "systematic review primary study clinical trial prospective retrospective cohort case series "
+            "systematic review primary study clinical trial "
+            "randomized controlled trial randomised controlled trial "
+            "prospective retrospective cohort case series "
             "sample size quantitative results treatment response efficacy"
         ),
 
         (
             f"{q} "
             "primary secondary acquired idiopathic hereditary erythromelalgia eryththermalgia "
-            "etiology cause associated disease autoimmune hematologic neurological"
+            "etiology cause associated disease autoimmune hematologic myeloproliferative neurological"
         ),
 
         (
@@ -80,8 +82,8 @@ def build_retrieval_queries(question):
 
         (
             f"{q} "
-            "small fiber neuropathy small fibre neuropathy SFN "
-            "intraepidermal nerve fiber density IENFD skin biopsy autonomic sensory neuropathy"
+            "small fiber neuropathy small fibre neuropathy "
+            "skin biopsy autonomic sensory neuropathy"
         ),
 
         (
@@ -108,7 +110,7 @@ def retrieve_evidence(question):
         results = client_openai.vector_stores.search(
             vector_store_id=vector_store_id,
             query=retrieval_query,
-            max_num_results=15,
+            max_num_results=30,
             rewrite_query=True
         )
 
@@ -173,7 +175,6 @@ def retrieve_evidence(question):
         )
 
     return selected_chunks, retrieval_queries, ranked_chunks
-
 
 question = st.text_input(
     "Ask a question about pain management in erythromelalgia"
