@@ -99,22 +99,6 @@ def build_retrieval_queries(question):
     return list(dict.fromkeys(queries))
 
 
-DESIGN_PRIORITY = {
-    "Systematic review": 4,
-    "Randomized controlled trial": 3,
-    "Prospective single-arm interventional study": 2,
-    "Prospective observational study": 2,
-    "Case series": 1
-}
-
-
-def get_design_priority(filename):
-    metadata = study_metadata.get(filename, {})
-    design = metadata.get("study_design", "")
-
-    return DESIGN_PRIORITY.get(design, 0)
-
-
 def retrieve_evidence(question):
     retrieval_queries = build_retrieval_queries(question)
 
@@ -162,7 +146,6 @@ def retrieve_evidence(question):
         unique_results.values(),
         key=lambda chunk: (
             chunk["hits"],
-            get_design_priority(chunk["filename"]),
             chunk["score"]
         ),
         reverse=True
@@ -189,7 +172,7 @@ def retrieve_evidence(question):
             chunks_per_file.get(filename, 0) + 1
         )
 
-    return selected_chunks, retrieval_queries
+    return selected_chunks, retrieval_queries, ranked_chunks
 
 
 question = st.text_input(
@@ -198,7 +181,7 @@ question = st.text_input(
 
 if question:
     with st.spinner("Searching the scientific literature..."):
-        chunks, retrieval_queries = retrieve_evidence(question)
+        chunks, retrieval_queries, ranked_chunks = retrieve_evidence(question)
 
     if not chunks:
         st.warning("No relevant evidence was retrieved for this question.")
@@ -221,6 +204,17 @@ if question:
         )
 
     context = "\n\n".join(context_parts)
+
+    with st.expander("Retrieval diagnostics"):
+        for chunk in ranked_chunks:
+            metadata = study_metadata.get(chunk["filename"], {})
+
+            st.write(
+                chunk["filename"],
+                "| hits:", chunk["hits"],
+                "| score:", round(chunk["score"], 3),
+                "| study design:", metadata.get("study_design", "Unknown")
+            )
 
     with st.spinner("Synthesizing the evidence..."):
         response = client_deepseek.chat.completions.create(
