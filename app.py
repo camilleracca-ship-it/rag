@@ -147,8 +147,8 @@ def retrieve_evidence(question):
     ranked_chunks = sorted(
         unique_results.values(),
         key=lambda chunk: (
-            chunk["hits"],
-            chunk["score"]
+            chunk["score"],
+            chunk["hits"]
         ),
         reverse=True
     )
