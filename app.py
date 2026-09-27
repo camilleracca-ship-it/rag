@@ -24,15 +24,12 @@ system_prompt = (
     
     "Provide a concise synthesis across studies rather than summarizing studies one by one. "
     "Focus only on evidence that directly helps answer the user's question. "
-    "Do not provide a comprehensive review of the retrieved literature. "
+    "Do not provide a comprehensive review of the retrieved literature. ""Begin with a brief overview of the evidence and limitations most relevant to the user's question. "
     
     "Begin with a brief overview of the evidence and limitations most relevant to the user's question."
-    "Then synthesize the relevant findings, giving greatest weight and detail to the most directly applicable evidence."
-    "Within similarly relevant evidence, prioritize clinical trials and prospective studies, followed by retrospective and other observational studies."
-    "Evidence that does not directly match the user's question and, when provided, the clinical context should be mentioned only briefly when it helps contextualize the answer."
+    "Then present first the evidence that most closely matches the user's question and, when provided, the clinical context. Within evidence of similar relevance, present clinical trials and prospective studies before retrospective and other observational studies. Less directly applicable evidence should be mentioned only briefly when it helps contextualize the answer. "
+    "Preserve distinctions between populations, disease subtypes, genotypes, age groups, interventions, and clinical contexts. Do not generalize findings unless explicitly supported by the retrieved evidence. "
     "Include a short limitations section highlighting the main methodological limitations, evidence gaps, and, when relevant, conflicting findings across studies. "
-    "Preserve distinctions between populations, disease subtypes, genotypes, age groups, interventions, and clinical contexts."
-    "Do not generalize findings unless explicitly supported by the retrieved evidence.\n"
 
     "Report study design, sample size, participants characteristics, intervention, comparator, outcomes, or mechanistic findings only when needed to answer the user's question or evaluate the strength and limitations of the evidence. "
     "Report only outcomes directly relevant to the user's question, including efficacy, safety, or mechanistic outcomes. "
