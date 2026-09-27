@@ -1,7 +1,10 @@
 import streamlit as st
 from openai import OpenAI
+from study_metadata import study_metadata
+
 
 st.title("Retrieval-Augmented Generation for Erythromelalgia")
+
 
 client_openai = OpenAI(
     api_key=st.secrets["OPENAI_API_KEY"]
@@ -14,72 +17,46 @@ client_deepseek = OpenAI(
 
 vector_store_id = st.secrets["OPENAI_VECTOR_STORE_ID"]
 
+
 system_prompt = (
-    "Answer the user's question exclusively from the retrieved scientific evidence and the provided study metadata.\n"
+    "Answer the user's question exclusively from the retrieved scientific excerpts and the provided study metadata. "
+    "Do not introduce medical information from prior knowledge or extrapolate beyond the reported evidence.\n"
 
-    "Base every substantive medical or quantitative claim on information explicitly present in the retrieved excerpts. "
-    "Use the provided metadata only for bibliographic and methodological context, such as publication type, evidence type, study design, and age group. "
-    "Do not introduce medical information from prior knowledge, extrapolate beyond reported results, "
-    "or combine details across studies unless explicitly supported by the retrieved evidence.\n"
+    "Provide a concise synthesis across primary studies rather than summarizing documents individually. "
+    "Highlight agreement, conflicting results, and evidence gaps. "
+    "Preserve distinctions between populations, erythromelalgia subtypes, genotypes, age groups, interventions, and clinical contexts. "
+    "Do not combine study-specific details, assume comparability, or generalize findings unless explicitly supported by the retrieved evidence.\n"
 
-    "Provide a concise synthesis across studies rather than summarizing documents individually. "
-    "Group related findings and highlight convergence, divergence, and inconsistencies.\n"
+    "When relevant, report study design, sample size, intervention, comparator, and outcomes, using exact numerical results when available. "
+    "Use the provided metadata for study design and the retrieved excerpts for the other study details and results. "
+    "Do not calculate, pool, or infer response rates, effect estimates, or other quantitative summaries that are not explicitly reported.\n"
 
-    "Prioritize relevant primary studies for study-specific findings and quantitative data. "
-    "When relevant, report the study design, sample size, intervention, comparator, and key outcomes, "
-    "using exact numerical results when available. "
-    "Use study design from the provided metadata when available, but obtain sample sizes, interventions, comparators, "
-    "and outcomes from the retrieved excerpts. "
-    "Do not calculate, pool, or infer response rates, effect estimates, comparative measures, "
-    "or other quantitative summaries unless explicitly reported in the retrieved excerpts.\n"
+    "Report study-specific findings and quantitative results exclusively from the retrieved primary studies. "
+    "Use systematic reviews only to assess the consistency, certainty, limitations, and gaps in the evidence. "
+    "Incorporate these considerations into the answer without presenting the review itself or using it as a source of study-specific results.\n"
 
-    "Use systematic reviews as background evidence to assess overall consistency, certainty, limitations, and gaps. "
-    "When relevant primary studies are available, present their findings directly rather than describing the review itself. "
-    "Do not write phrases such as 'the systematic review found' or 'the review concluded' unless the user specifically asks about the review. "
-    "Systematic reviews may still be listed in the Sources section if they contributed to the interpretation.\n"
+    "Interpret findings according to study design, sample size, statistical precision, methodological quality, and publication type. "
+    "Highlight relevant limitations, including sparse data, uncontrolled designs, and difficulty attributing effects to a specific intervention. "
+    "Do not infer causality from observational or uncontrolled studies or treat small or imprecise controlled studies as definitive evidence. "
+    "Distinguish peer-reviewed publications from registry-only results when this affects interpretation; publication in a clinical trial registry does not constitute peer review.\n"
 
-    "Interpret findings according to study design, sample size, statistical precision, methodological quality, and publication type when relevant. "
-    "Distinguish results reported in peer-reviewed journal articles from results available only through clinical trial registries. "
-    "Do not treat publication in a clinical trial registry as peer review. "
-    "State this distinction when it is relevant to the interpretation or limitations of the evidence.\n"
+    "Distinguish evidence suggesting benefit, evidence suggesting no benefit, and insufficient or inconclusive evidence. "
+    "Do not interpret a non-significant result as proof of no effect or resolve conflicting findings through unsupported inference. "
+    "Use cautious wording where appropriate and keep uncertainty proportionate to the strength and amount of evidence.\n"
 
-    "Do not infer causality from observational or uncontrolled studies or present small or imprecise controlled studies as definitive evidence. "
-    "Use cautious wording such as 'reported', 'observed', 'suggests', or 'was associated with' when appropriate.\n"
+    "Explicitly acknowledge when the retrieved excerpts lack requested details or provide insufficient evidence to answer all or part of the question.\n"
 
-    "Distinguish clearly between evidence suggesting benefit, evidence suggesting no benefit, "
-    "and insufficient or inconclusive evidence. "
-    "Do not interpret a non-significant result as proof of no effect. "
-    "When findings conflict, present the disagreement without resolving it by inference.\n"
+    "Respond in the user's language with clear, precise, neutral, concise, and scientifically appropriate wording. "
+    "Adapt the structure to the question, using short informative headings and bullet points when helpful.\n"
 
-    "Preserve distinctions between study populations, erythromelalgia subtypes, genotypes, age groups, "
-    "interventions, and clinical contexts. "
-    "Do not treat them as directly comparable or generalize findings from a narrow population "
-    "unless supported by the retrieved evidence.\n"
-
-    "Clearly indicate important limitations, including small sample sizes, sparse data, methodological limitations, "
-    "statistical imprecision, uncontrolled designs, and difficulty attributing effects to a specific intervention. "
-    "Keep uncertainty proportionate to the strength and amount of evidence.\n"
-
-    "Do not infer absence of evidence from information missing in the retrieved excerpts. "
-    "Distinguish between information 'not identified in the retrieved excerpts' and information explicitly reported as absent from the literature. "
-    "If details such as dose, treatment duration, follow-up, adverse events, or long-term outcomes are not present, "
-    "state only that they were not identified in the retrieved excerpts. "
-    "If the retrieved evidence is insufficient to answer all or part of the question, state this explicitly.\n"
-
-    "Organize the answer according to the retrieved evidence, using short informative headings and bullet points when helpful. "
-    "Adapt the structure to the user's question and avoid unnecessary predefined sections, long paragraphs, and repeated limitations.\n"
-
-    "End with a 'Sources' section listing only sources whose retrieved excerpts directly contributed to the answer. "
-    "For each source, use the author, year, and title exactly as provided in the metadata. "
-    "Do not cite or name sources in the main body. "
-    "Do not invent, modify, complete, or infer bibliographic information that is not provided in the metadata.\n"
-
-    "Respond in the user’s language, using clear, precise, neutral, concise, and scientifically appropriate language."
+    "List sources only in a final 'Sources' section, including only publications whose retrieved content contributed to the answer or its interpretation. "
+    "This may include systematic reviews when relevant. "
+    "Use the author, year, and article title exactly as provided in the metadata. "
+    "Do not cite or name sources in the main body."
 )
 
 
 def build_retrieval_queries(question):
-
     q = question.strip()
 
     queries = [
@@ -124,13 +101,11 @@ def build_retrieval_queries(question):
 
 
 def retrieve_evidence(question):
-
     retrieval_queries = build_retrieval_queries(question)
 
     all_results = []
 
     for retrieval_query in retrieval_queries:
-
         results = client_openai.vector_stores.search(
             vector_store_id=vector_store_id,
             query=retrieval_query,
@@ -143,9 +118,7 @@ def retrieve_evidence(question):
     unique_results = {}
 
     for result in all_results:
-
         for content in result.content:
-
             if content.type != "text":
                 continue
 
@@ -186,7 +159,6 @@ def retrieve_evidence(question):
     max_total_chunks = 30
 
     for chunk in ranked_chunks:
-
         if len(selected_chunks) >= max_total_chunks:
             break
 
@@ -209,54 +181,32 @@ question = st.text_input(
 )
 
 if question:
-
     with st.spinner("Searching the scientific literature..."):
         chunks, retrieval_queries = retrieve_evidence(question)
 
     if not chunks:
-        st.warning(
-            "No relevant evidence was retrieved for this question."
-        )
+        st.warning("No relevant evidence was retrieved for this question.")
         st.stop()
 
     context_parts = []
 
     for chunk in chunks:
+        metadata = study_metadata.get(chunk["filename"], {})
+
+        metadata_text = "\n".join(
+            f"{key}: {value}"
+            for key, value in metadata.items()
+        )
 
         context_parts.append(
             f"DOCUMENT: {chunk['filename']}\n"
-            f"{chunk['text']}"
+            f"STUDY METADATA:\n{metadata_text}\n\n"
+            f"RETRIEVED EXCERPT:\n{chunk['text']}"
         )
 
     context = "\n\n".join(context_parts)
 
-    with st.expander("Retrieved evidence"):
-
-        st.markdown("### Retrieval queries")
-
-        for query in retrieval_queries:
-            st.write(f"- {query}")
-
-        st.markdown("### Retrieved passages")
-
-        for i, chunk in enumerate(chunks, start=1):
-
-            st.markdown(
-                f"**{i}. {chunk['filename']}**  \n"
-                f"Score: `{chunk['score']:.3f}`  \n"
-                f"Retrieved by: `{chunk['hits']}` query/queries"
-            )
-
-            preview = chunk["text"]
-
-            if len(preview) > 1000:
-                preview = preview[:1000] + "..."
-
-            st.write(preview)
-            st.divider()
-
     with st.spinner("Synthesizing the evidence..."):
-
         response = client_deepseek.chat.completions.create(
             model="deepseek-ai/DeepSeek-V4.1-Flash",
             messages=[
@@ -275,5 +225,4 @@ if question:
         )
 
     answer = response.choices[0].message.content
-
     st.markdown(answer)
