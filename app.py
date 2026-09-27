@@ -63,7 +63,7 @@ def build_retrieval_queries(question):
 
         (
             f"{q} "
-            "primary study clinical trial prospective retrospective cohort case series "
+            "systematic review primary study clinical trial prospective retrospective cohort case series "
             "sample size quantitative results treatment response efficacy"
         ),
 
@@ -97,6 +97,22 @@ def build_retrieval_queries(question):
     ]
 
     return list(dict.fromkeys(queries))
+
+
+DESIGN_PRIORITY = {
+    "Systematic review": 4,
+    "Randomized controlled trial": 3,
+    "Prospective single-arm interventional study": 2,
+    "Prospective observational study": 2,
+    "Case series": 1
+}
+
+
+def get_design_priority(filename):
+    metadata = study_metadata.get(filename, {})
+    design = metadata.get("study_design", "")
+
+    return DESIGN_PRIORITY.get(design, 0)
 
 
 def retrieve_evidence(question):
@@ -146,6 +162,7 @@ def retrieve_evidence(question):
         unique_results.values(),
         key=lambda chunk: (
             chunk["hits"],
+            get_design_priority(chunk["filename"]),
             chunk["score"]
         ),
         reverse=True
