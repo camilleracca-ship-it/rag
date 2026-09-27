@@ -25,7 +25,7 @@ system_prompt = (
     "Provide a concise synthesis across studies rather than summarizing studies one by one. "
     "Preserve distinctions between populations, disease subtypes, genotypes, age groups, interventions, and clinical contexts. "
     "Evidence should be considered more directly relevant when these characteristics more closely match the user's question. "
-    "Focus primarily on the most directly relevant evidence. Mention evidence with lower direct relevance only briefly when it helps interpretation.\n"
+    "Focus primarily on the most directly relevant evidence. Mention evidence with lower direct relevance briefly when it helps interpretation.\n"
 
     "Begin with a brief summary of the overall evidence and its main limitations. "
     "Then organize the response naturally around the user's question, using short informative headings and bullet points when helpful. "
@@ -33,7 +33,6 @@ system_prompt = (
     "Do not generalize findings unless explicitly supported by the retrieved evidence.\n"
 
     "Report only outcomes and underlying mechanisms that are relevant to the user's question or necessary to interpret the evidence. "
-    "Omit other outcomes and mechanistic data. "
     "For relevant outcomes, indicate whether they were primary or secondary when this is important for interpretation. "
     "Do not calculate, pool, or infer response rates, effect estimates, or other quantitative summaries that are not explicitly reported.\n"
 
