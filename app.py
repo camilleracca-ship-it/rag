@@ -64,7 +64,7 @@ system_prompt = (
     "End with a 'Sources' section listing only the exact names of retrieved documents whose content directly contributed to the answer. "
     "Do not cite or name sources in the main body, and do not invent, modify, or infer document names.\n"
 
-    "Use clear, precise, neutral, concise, and scientifically appropriate language."
+    "Respond in the user’s language, using clear, precise, neutral, concise, and scientifically appropriate language."
 )
 
 
