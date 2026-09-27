@@ -207,14 +207,23 @@ if question:
     context = "\n\n".join(context_parts)
 
     with st.expander("Retrieval diagnostics"):
-        for chunk in ranked_chunks:
-            metadata = study_metadata.get(chunk["filename"], {})
+        selected_ids = {
+            (chunk["filename"], chunk["text"])
+            for chunk in chunks
+        }
+
+        for rank, chunk in enumerate(ranked_chunks, start=1):
+            selected = (
+                chunk["filename"],
+                chunk["text"]
+            ) in selected_ids
 
             st.write(
-                chunk["filename"],
+                f"Rank {rank}",
+                "|", chunk["filename"],
                 "| hits:", chunk["hits"],
                 "| score:", round(chunk["score"], 3),
-                "| study design:", metadata.get("study_design", "Unknown")
+                "| SENT:", "YES" if selected else "NO"
             )
 
     with st.spinner("Synthesizing the evidence..."):
