@@ -28,8 +28,8 @@ system_prompt = (
     "Focus primarily on the evidence that is most directly relevant to the user's question. "
     "When relevance is comparable, present first findings supported by larger samples and prospective or controlled study designs. "
     "When disease subtype is not specified in the user's question, report evidence across all subtypes, but keep subtype-specific findings distinct.\n "
-    "When participants receive concomitant treatments, preserve this context and avoid attributing observed outcomes to a single intervention unless supported by the study design. "
-    
+    "When participants receive concomitant treatments, preserve this context and report outcomes for the treatment regimen as a whole, without attributing them to a single intervention unless supported by the study design. "
+
     "Evidence with lower direct relevance should be mentioned only if it helps contextualize or interpret the answer. "
     "When included, it should be kept brief.\n"
 
@@ -103,11 +103,11 @@ def build_retrieval_queries(question):
 
     return list(dict.fromkeys(queries))
 
-
 def retrieve_evidence(question):
     retrieval_queries = build_retrieval_queries(question)
 
-    all_results = []
+    unique_results = {}
+    per_query_candidates = []
 
     for retrieval_query in retrieval_queries:
         results = client_openai.vector_stores.search(
@@ -117,35 +117,50 @@ def retrieve_evidence(question):
             rewrite_query=True
         )
 
-        all_results.extend(results.data)
+        query_keys = []
+        seen_in_this_query = set()
 
-    unique_results = {}
+        for rank, result in enumerate(results.data, start=1):
+            for content in result.content:
+                if content.type != "text":
+                    continue
 
-    for result in all_results:
-        for content in result.content:
-            if content.type != "text":
-                continue
+                normalized_text = " ".join(content.text.split())
 
-            normalized_text = " ".join(content.text.split())
+                key = (
+                    result.filename,
+                    normalized_text
+                )
 
-            key = (
-                result.filename,
-                normalized_text
-            )
-
-            if key not in unique_results:
-                unique_results[key] = {
-                    "filename": result.filename,
-                    "text": content.text,
-                    "score": result.score,
-                    "hits": 1
-                }
-
-            else:
-                unique_results[key]["hits"] += 1
+                if key not in unique_results:
+                    unique_results[key] = {
+                        "filename": result.filename,
+                        "text": content.text,
+                        "score": result.score,
+                        "hits": 0,
+                        "matched_queries": [],
+                        "query_ranks": {}
+                    }
 
                 if result.score > unique_results[key]["score"]:
                     unique_results[key]["score"] = result.score
+
+                if key not in seen_in_this_query:
+                    unique_results[key]["hits"] += 1
+                    unique_results[key]["matched_queries"].append(
+                        retrieval_query
+                    )
+                    unique_results[key]["query_ranks"][
+                        retrieval_query
+                    ] = rank
+
+                    query_keys.append(key)
+                    seen_in_this_query.add(key)
+
+        per_query_candidates.append({
+            "query": retrieval_query,
+            "keys": query_keys
+        })
 
     ranked_chunks = sorted(
         unique_results.values(),
@@ -160,26 +175,62 @@ def retrieve_evidence(question):
     selected_keys = set()
     chunks_per_file = {}
 
-    max_chunks_per_file = 3
+    min_chunks_per_query = 4
+    max_chunks_per_file = 5
     max_total_chunks = 30
 
-    for chunk in ranked_chunks:
-        if len(selected_chunks) >= max_total_chunks:
+    chunks_added_per_query = [
+        0 for _ in per_query_candidates
+    ]
+
+    query_positions = [
+        0 for _ in per_query_candidates
+    ]
+
+    while len(selected_chunks) < max_total_chunks:
+        progress = False
+
+        for i, query_data in enumerate(per_query_candidates):
+            if len(selected_chunks) >= max_total_chunks:
+                break
+
+            if chunks_added_per_query[i] >= min_chunks_per_query:
+                continue
+
+            keys = query_data["keys"]
+
+            while query_positions[i] < len(keys):
+                key = keys[query_positions[i]]
+                query_positions[i] += 1
+
+                if key in selected_keys:
+                    continue
+
+                chunk = unique_results[key]
+                filename = chunk["filename"]
+
+                if chunks_per_file.get(filename, 0) >= max_chunks_per_file:
+                    continue
+
+                selected_chunks.append(chunk)
+                selected_keys.add(key)
+
+                chunks_per_file[filename] = (
+                    chunks_per_file.get(filename, 0) + 1
+                )
+
+                chunks_added_per_query[i] += 1
+                progress = True
+                break
+
+        if not progress:
             break
 
-        filename = chunk["filename"]
-
-        if chunks_per_file.get(filename, 0) > 0:
-            continue
-
-        chunk_key = (
-            chunk["filename"],
-            " ".join(chunk["text"].split())
-        )
-
-        selected_chunks.append(chunk)
-        selected_keys.add(chunk_key)
-        chunks_per_file[filename] = 1
+        if all(
+            n >= min_chunks_per_query
+            for n in chunks_added_per_query
+        ):
+            break
 
     for chunk in ranked_chunks:
         if len(selected_chunks) >= max_total_chunks:
