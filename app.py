@@ -308,7 +308,7 @@ def retrieve_evidence(question):
 
 question = st.text_area(
     t["question"],
-    placeholder=t["question_placeholder"],
+    placeholder=t["question"],
     height=120,
     label_visibility="collapsed"
 )
