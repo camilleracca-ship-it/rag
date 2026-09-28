@@ -301,43 +301,6 @@ if question:
 
     context = "\n\n".join(context_parts)
 
-    with st.expander("Retrieval diagnostics"):
-
-        selected_ids = {
-            (
-                chunk["filename"],
-                " ".join(chunk["text"].split())
-            )
-            for chunk in chunks
-        }
-
-        for rank, chunk in enumerate(
-            ranked_chunks,
-            start=1
-        ):
-            chunk_id = (
-                chunk["filename"],
-                " ".join(chunk["text"].split())
-            )
-
-            selected = chunk_id in selected_ids
-
-            metadata = study_metadata.get(
-                chunk["filename"],
-                {}
-            )
-
-            st.write(
-                f"Rank {rank}",
-                "|", chunk["filename"],
-                "| hits:", chunk["hits"],
-                "| score:", round(chunk["score"], 3),
-                "| study design:",
-                metadata.get("study_design", "Unknown"),
-                "| SENT:",
-                "YES" if selected else "NO"
-            )
-
     with st.spinner("Synthesizing the evidence..."):
         response = client_deepseek.chat.completions.create(
             model="deepseek-ai/DeepSeek-V4.1-Flash",
