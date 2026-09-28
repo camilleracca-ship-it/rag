@@ -27,7 +27,7 @@ system_prompt = (
     "Prioritize evidence that more closely matches the characteristics explicitly specified in the user's question, including disease subtype, genotype, age group, intervention, and clinical context. "
     "Maintain this priority even when such evidence is not predominant in the retrieved material. "
     "When a disease subtype is specified, prioritize evidence from that subtype. "
-    "When disease subtype is not specified, treat the question as applying to the condition broadly. Report findings for each disease subtype represented in the retrieved evidence, and do not generalise findings from one subtype to others unless supported by the evidence. "
+    "When disease subtype is not specified, report findings for each disease subtype represented in the retrieved evidence, and do not generalise findings from one subtype to others unless supported by the evidence. If no relevant data are available for a particular subtype, state this explicitly."
     "When relevance is comparable, present first findings supported by larger samples and prospective or controlled study designs. "
     "Evidence with lower direct relevance should be mentioned only if it helps contextualize or interpret the answer. When included, it should be kept brief.\n"
     
