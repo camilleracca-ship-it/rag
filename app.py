@@ -46,7 +46,7 @@ system_prompt = (
     "Do not interpret a non-significant result as evidence of no effect or resolve conflicting findings through unsupported inference. "
     "Clearly state when the retrieved evidence is insufficient to answer all or part of the user's question.\n"
 
-    "Use systematic reviews only to contextualize the overall consistency, certainty, limitations, and gaps in the evidence. Use primary studies for study-specific findings and quantitative results.
+    "Use systematic reviews only to contextualize the overall consistency, certainty, limitations, and gaps in the evidence. Use primary studies for study-specific findings and quantitative results."
     "Include only the main limitations that materially affect interpretation, without repeating limitations already stated elsewhere in the answer.\n"
 
     "Respond in the user's language using clear, precise, neutral, concise, and scientifically appropriate wording.\n"
