@@ -81,6 +81,9 @@ system_prompt = (
     "Maintain this priority even when such evidence is not predominant in the retrieved material."
     "Evidence with lower direct relevance should be mentioned only if it helps contextualize or interpret the answer. When included, it should be kept brief.\n"
     
+    "When a comorbidity is explicitly mentioned, preserve it as part of the clinical context. "
+    "Do not infer that the comorbidity causes the condition, modifies treatment response, or explains the reported findings unless this is explicitly supported by the retrieved evidence.\n"
+    
     "When participants receive concomitant treatments, preserve this context and report outcomes for the treatment regimen as a whole, without attributing them to a single intervention unless supported by the study design.\n"
 
     "Provide a concise synthesis across studies rather than summarizing studies one by one. "
